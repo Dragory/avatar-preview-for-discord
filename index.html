@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<title>Avatar Preview for Discord</title>
+
+	<style>
+		*,
+		*:before,
+		*:after {
+			box-sizing: border-box;
+		}
+
+		html {
+			font: normal 62.5%/1.4 sans-serif;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+		}
+
+		body {
+			font-size: 15px;
+			margin: 0;
+			padding: 0;
+
+			background-color: #f8f8f8;
+			color: #222;
+		}
+
+		.wrapper {
+			width: 600px;
+			margin: 0 auto;
+		}
+
+		.columns {
+			display: flex;
+		}
+
+		.columns .col {
+			flex: 0 0 1;
+		}
+
+		h1 {
+			font-weight: 600;
+		}
+
+		.preview {
+			overflow: hidden;
+			border-radius: 10px;
+			margin: 40px 0;
+		}
+
+		.preview.dark {
+			background-color: #36393e;
+			color: hsla(0, 0%, 100%, .7);
+		}
+
+		.preview.dark h2 {
+			color: #fff;
+		}
+
+		.preview.light {
+			background-color: #fff;
+			color: #737f8d;
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.53);
+		}
+
+		.preview.light h2 {
+			color: #2f3136;
+		}
+
+		.preview .message {
+			margin: 0 6px 0 20px;
+			padding: 20px 10px 20px 0;
+			border-bottom: 1px solid hsla(0, 0%, 100%, .04);
+
+			display: flex;
+		}
+
+		.preview .message .avatar {
+			flex: 0 0 auto;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			margin-top: -2px;
+			margin-right: 20px;
+
+			background-size: cover;
+			background-clip: padding-box;
+			background-position: 50% 50%;
+		}
+
+		.preview .message .avatar.placeholder {
+			background-color: #25272b;
+			border: 1px dashed #999;
+		}
+
+		.preview .message .content {
+			flex: 1 1 100%;
+		}
+
+		.preview .message h2 {
+			font-size: 16px;
+			font-weight: 600;
+			margin: 0;
+		}
+
+		.preview .message .text {
+			margin-top: 6px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<h1>Avatar Preview for Discord</h1>
+		<div class="avatar-selector columns">
+			<div class="col">
+				<input type="file" id="avatar-selector-input">
+			</div>
+			<div class="col">
+				<select id="theme-selector">
+					<option value="dark">Dark theme</option>
+					<option value="light">Light theme</option>
+				</select>
+			</div>
+		</div>
+
+		<div id="preview" class="preview dark">
+			<div class="message">
+				<div class="avatar" style="background-image: url('https://cdn.discordapp.com/embed/avatars/3.png')"></div>
+				<div class="content">
+					<h2 style="color: rgb(230, 126, 34)">#1 Genji</h2>
+					<div class="text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt non assumenda magnam, autem, tempora aliquid!
+					</div>
+				</div>
+			</div>
+			<div class="message">
+				<div id="avatar-target" class="avatar placeholder"></div>
+				<div class="content">
+					<h2 contenteditable>You, Me &amp; I</h2>
+					<div class="text" contenteditable>
+						The avatar you select will appear here
+					</div>
+				</div>
+			</div>
+			<div class="message">
+				<div class="avatar" style="background-image: url('https://cdn.discordapp.com/embed/avatars/2.png')"></div>
+				<div class="content">
+					<h2 style="color: rgb(46, 204, 113)">azi nadmin</h2>
+					<div class="text">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia perferendis itaque est ducimus voluptatibus ea, placeat,
+						debitis dolore et esse.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		{
+			const input = document.getElementById('avatar-selector-input');
+			const avatarTarget = document.getElementById('avatar-target');
+
+			input.addEventListener('change', () => {
+				const file = input.files[0];
+				if (!file) return;
+
+				const reader = new FileReader()
+				reader.addEventListener('load', () => {
+					avatarTarget.classList.remove('placeholder');
+					avatarTarget.style.backgroundImage = `url(${reader.result})`;
+				});
+				reader.readAsDataURL(file);
+			});
+
+			const preview = document.getElementById('preview');
+			const themeSelector = document.getElementById('theme-selector');
+
+			themeSelector.addEventListener('change', () => {
+				const theme = themeSelector.options[themeSelector.selectedIndex].value;
+				preview.setAttribute('class', `preview ${theme}`);
+			});
+		}
+	</script>
+</body>
+
+</html>
